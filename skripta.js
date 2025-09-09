@@ -1,40 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cells = document.querySelectorAll('#raspored td[contenteditable="true"]');
-    const title = document.getElementById('podnaslov');
+    const table = document.getElementById('raspored');
 
-    const loadData = () => {
-        // Učitavanje naslova
-        const savedTitle = localStorage.getItem('titleData');
-        if (savedTitle) {
-            title.innerText = savedTitle;
-        } else {
-            title.innerText = "Kliknite ovdje za unos naslova";
+    // Funkcija za učitavanje podataka iz localStorage-a
+    const loadSchedule = () => {
+        const savedData = localStorage.getItem('scheduleData');
+        if (savedData) {
+            table.innerHTML = savedData;
         }
-
-        // Učitavanje sadržaja tablice
-        cells.forEach(cell => {
-            const savedContent = localStorage.getItem(cell.id);
-            if (savedContent) {
-                cell.innerText = savedContent;
-            }
-        });
     };
 
-    const saveData = () => {
-        // Spremanje naslova
-        localStorage.setItem('titleData', title.innerText);
-
-        // Spremanje sadržaja tablice
-        cells.forEach(cell => {
-            localStorage.setItem(cell.id, cell.innerText);
-        });
+    // Funkcija za spremanje podataka u localStorage
+    const saveSchedule = () => {
+        localStorage.setItem('scheduleData', table.innerHTML);
     };
 
-    // Dodavanje "listenere" (listeners) za praćenje promjena
-    title.addEventListener('input', saveData);
-    cells.forEach(cell => {
-        cell.addEventListener('input', saveData);
-    });
+    // Slušanje događaja 'input' na cijeloj tablici
+    // Svaki put kad promijenite tekst, podaci će se spremiti
+    table.addEventListener('input', saveSchedule);
 
-    loadData();
+    // Učitaj raspored kad se stranica učita
+    loadSchedule();
 });
